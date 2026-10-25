@@ -12,7 +12,7 @@ A workout logging app for lifters, built with React Native, Expo and TypeScript.
 
 ## How it's built
 
-I'm building this with Claude Code. I review every change, and testing it on my iPhone. Testing on a real phone is how I found the usability issues which I will expand on more as I make more progress in this project.
+I'm building this with Claude Code. I review every change, and test it on my iPhone. Testing on a real phone is how I found the usability issues which I will expand on more as I make more progress in this project.
 
 The logic lives in `src/sets.ts`, separate from the screen in `App.tsx`, so it can be tested on its own.
 
