@@ -64,3 +64,25 @@ export function setNumber(sets: LoggedSet[], index: number): number {
 export function formatSet(set: LoggedSet, number: number): string {
   return `Set ${number}: ${set.weightKg} kg × ${set.reps} @ RPE ${set.rpe}`;
 }
+
+export type ExerciseGroup = {
+  exercise: string;
+  sets: LoggedSet[];
+};
+
+export function groupByExercise(sets: LoggedSet[]): ExerciseGroup[] {
+  const groups: ExerciseGroup[] = [];
+
+  for (const set of sets) {
+    const existing = groups.find((group) => group.exercise.toLowerCase() === set.exercise.toLowerCase());
+    
+    if (existing) {
+      existing.sets.push(set);
+    }
+    else {
+      groups.push({ exercise: set.exercise, sets: [set] });
+    }
+  }
+  return groups
+}
+

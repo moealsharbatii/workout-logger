@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import { formatSet, LoggedSet, MAX_SETS_AT_ONCE, setNumber, validateSet } from './sets';
+import { formatSet, LoggedSet, MAX_SETS_AT_ONCE, setNumber, validateSet, groupByExercise } from './sets';
 
 const valid = { exercise: 'Squat', weight: '140', reps: '5', rpe: '8', sets: '1' };
 
@@ -92,7 +92,57 @@ describe('setNumber', () => {
 
 describe('formatSet', () => {
   it('shows weight, reps and RPE', () => {
-    const set: LoggedSet = { id: '1', exercise: 'Squat', weightKg: 140, reps: 5, rpe: 8 };
+    const set: LoggedSet = {
+      id: '1',
+      exercise: 'Squat',
+      weightKg: 140,
+      reps: 5,
+      rpe: 8
+    };
     expect(formatSet(set, 2)).toBe('Set 2: 140 kg × 5 @ RPE 8');
   });
 });
+
+describe('groupByExercise', () => {
+  const make = (exercise: string): LoggedSet => ({
+    id: exercise + Math.random(),
+    exercise,
+    weightKg: 100,
+    reps: 5,
+    rpe: 8,
+  });
+
+  it('returns no groups for no sets', () => {
+    expect(groupByExercise([])).toEqual([]);
+  });
+
+  it('groups a superset by exercise', () => {
+    const sets = [make('Row'), make('Press'), make('Row'), make('Press')];
+    const groups = groupByExercise(sets);
+
+    expect(groups.length).toBe(2);
+    expect(groups[0].exercise).toBe('Row');
+    expect(groups[0].sets.length).toBe(2);
+    expect(groups[1].exercise).toBe('Press');
+    expect(groups[1].sets.length).toBe(2);
+  })
+
+  it('group exercises with same name/different capitalization', () => {
+    const sets = [make('Squat'), make('squat')];
+    const groups = groupByExercise(sets);
+
+    expect(groups.length).toBe(1);
+    expect(groups[0].exercise).toBe('Squat');
+    expect(groups[0].sets.length).toBe(2);
+  })
+
+  it('group exercises by order of first appearance', () => {
+    const sets = [make('Bench'), make('Squat'), make('Bench')];
+    const groups = groupByExercise(sets);
+
+    expect(groups.length).toBe(2);
+    expect(groups[0].exercise).toBe('Bench');
+    expect(groups[1].exercise).toBe('Squat');
+  })
+});
+
