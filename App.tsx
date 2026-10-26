@@ -1,7 +1,19 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-import { formatSet, LoggedSet, setNumber, validateSet } from "./src/sets";
+import {
+  Pressable,
+  SectionList,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import {
+  formatSet,
+  LoggedSet,
+  validateSet,
+  groupByExercise,
+} from "./src/sets";
 
 export default function App() {
   // What's currently typed in the form
@@ -35,6 +47,11 @@ export default function App() {
     setSetCount("1");
   }
 
+  const sections = groupByExercise(sets).map((group) => ({
+    title: group.exercise,
+    data: group.sets,
+  }));
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Today's workout</Text>
@@ -46,10 +63,30 @@ export default function App() {
         onChangeText={setExercise}
       />
       <View style={styles.row}>
-        <LabelledInput label="kg" value={weight} onChange={setWeight} keyboard="decimal-pad" />
-        <LabelledInput label="Reps" value={reps} onChange={setReps} keyboard="number-pad" />
-        <LabelledInput label="RPE" value={rpe} onChange={setRpe} keyboard="decimal-pad" />
-        <LabelledInput label="Sets" value={setCount} onChange={setSetCount} keyboard="number-pad" />
+        <LabelledInput
+          label="kg"
+          value={weight}
+          onChange={setWeight}
+          keyboard="decimal-pad"
+        />
+        <LabelledInput
+          label="Reps"
+          value={reps}
+          onChange={setReps}
+          keyboard="number-pad"
+        />
+        <LabelledInput
+          label="RPE"
+          value={rpe}
+          onChange={setRpe}
+          keyboard="decimal-pad"
+        />
+        <LabelledInput
+          label="Sets"
+          value={setCount}
+          onChange={setSetCount}
+          keyboard="number-pad"
+        />
       </View>
 
       {error !== "" && <Text style={styles.error}>{error}</Text>}
@@ -58,16 +95,20 @@ export default function App() {
         <Text style={styles.buttonText}>Log set</Text>
       </Pressable>
 
-      <FlatList
-        data={sets}
+      <SectionList
+        sections={sections}
         keyExtractor={(set) => set.id}
+        renderSectionHeader={({ section }) => (
+          <Text style={styles.setExercise}>{section.title}</Text>
+        )}
         renderItem={({ item, index }) => (
           <View style={styles.setRow}>
-            <Text style={styles.setExercise}>{item.exercise}</Text>
-            <Text>{formatSet(item, setNumber(sets, index))}</Text>
+            <Text>{formatSet(item, index + 1)}</Text>
           </View>
         )}
-        ListEmptyComponent={<Text style={styles.empty}>No sets logged yet.</Text>}
+        ListEmptyComponent={
+          <Text style={styles.empty}>No sets logged yet.</Text>
+        }
       />
 
       <StatusBar style="auto" />
@@ -96,7 +137,12 @@ function LabelledInput(props: {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", paddingTop: 64, paddingHorizontal: 16 },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingTop: 64,
+    paddingHorizontal: 16,
+  },
   title: { fontSize: 24, fontWeight: "700", marginBottom: 16 },
   row: { flexDirection: "row", gap: 8 },
   small: { flex: 1 },
@@ -118,7 +164,11 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
-  setRow: { paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "#eee" },
+  setRow: {
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+  },
   setExercise: { fontWeight: "600" },
   empty: { color: "#888", marginTop: 8 },
 });

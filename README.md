@@ -9,6 +9,7 @@ A workout logging app for lifters, built with React Native, Expo and TypeScript.
 - Sets are numbered per exercise, ignoring capitals, so "squat" and "Squat" count together
 - Input is validated with clear messages: RPE from 1 to 10 in half steps, whole-number reps, no negative weights
 - The form keeps its values after logging, so the next set only needs small edits
+- Sets are grouped by exercise, so supersets stay readable, while the order they were logged is kept
 
 ## How it's built
 
@@ -39,7 +40,6 @@ npm test
 
 ## Next up
 
-- Group sets by exercise in the list, while keeping the order they were logged
 - Save workouts on the phone, so they survive closing the app
 - Workout history by date
 - Estimated one-rep max from weight, reps and RPE
