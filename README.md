@@ -36,7 +36,7 @@ npx expo start --tunnel ngrok
 npm test
 ```
 
-31 Jest tests cover the validation rules at their boundaries, invalid input, and set numbering.
+35 Jest tests cover the validation rules at their boundaries, invalid input, and set numbering and grouping. GitHub Actions runs the tests and a TypeScript type check on every push.
 
 ## Next up
 
