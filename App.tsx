@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { loadSets, saveSets } from "./src/storage";
 import {
   Pressable,
   SectionList,
@@ -8,12 +9,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import {
-  formatSet,
-  LoggedSet,
-  validateSet,
-  groupByExercise,
-} from "./src/sets";
+import { formatSet, LoggedSet, validateSet, groupByExercise } from "./src/sets";
 
 export default function App() {
   // What's currently typed in the form
@@ -24,7 +20,27 @@ export default function App() {
   const [setCount, setSetCount] = useState("1");
 
   const [error, setError] = useState("");
+  const [loaded, setLoaded] = useState(false);
   const [sets, setSets] = useState<LoggedSet[]>([]);
+
+  useEffect(() => {
+    async function load() {
+      const saved = await loadSets();
+
+      setSets(saved);
+      setLoaded(true);
+    }
+    load();
+  }, []);
+
+  useEffect(() => {
+    if (!loaded) return;
+
+    async function save() {
+      await saveSets(sets);
+    }
+    save();
+  }, [sets, loaded]);
 
   function logSet() {
     const result = validateSet({ exercise, weight, reps, rpe, sets: setCount });
