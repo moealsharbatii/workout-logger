@@ -9,9 +9,12 @@ export async function saveSets(sets: LoggedSet[]): Promise<void> {
 }
 
 export async function loadSets(): Promise<LoggedSet[]> {
-   const result = await AsyncStorage.getItem(KEY)
+  try {
+    const result = await AsyncStorage.getItem(KEY)
 
-  if (result == null) return []
-  
-  return JSON.parse(result)
+    if (result == null) return []
+    return JSON.parse(result)
+  } catch (error) {
+    return []
+  }
 }
