@@ -10,12 +10,13 @@ A workout logging app for lifters, built with React Native, Expo and TypeScript.
 - Input is validated with clear messages: RPE from 1 to 10 in half steps, whole-number reps, no negative weights
 - The form keeps its values after logging, so the next set only needs small edits
 - Sets are grouped by exercise, so supersets stay readable, while the order they were logged is kept
+- Delete a logged set from its row
+- Sets are saved on the phone, so they're still there after closing the app
+- If the saved data is ever corrupted, the app opens with an empty list instead of crashing
 
 ## How it's built
 
-I'm building this with Claude Code. I review every change, and test it on my iPhone. Testing on a real phone is how I found the usability issues which I will expand on more as I make more progress in this project.
-
-The logic lives in `src/sets.ts`, separate from the screen in `App.tsx`, so it can be tested on its own.
+I started this project with Claude Code generating code that I reviewed. I now write the features myself, using Claude Code as a tutor, and test them on my iPhone.
 
 ## Running it
 
@@ -36,11 +37,11 @@ npx expo start --tunnel ngrok
 npm test
 ```
 
-35 Jest tests cover the validation rules at their boundaries, invalid input, and set numbering and grouping. GitHub Actions runs the tests and a TypeScript type check on every push.
+Jest tests cover the validation rules at their boundaries, invalid input, set numbering and grouping, deleting a set, and saving and loading, including corrupted data. GitHub Actions runs the tests and a TypeScript type check on every push.
 
 ## Next up
 
-- Save workouts on the phone, so they survive closing the app
+- Add a date to each set, so "Today's workout" shows only today
 - Workout history by date
 - Estimated one-rep max from weight, reps and RPE
 - Rest timer
