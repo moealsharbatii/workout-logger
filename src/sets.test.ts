@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import { formatSet, LoggedSet, MAX_SETS_AT_ONCE, setNumber, validateSet, groupByExercise } from './sets';
+import { formatSet, LoggedSet, MAX_SETS_AT_ONCE, setNumber, validateSet, groupByExercise, removeSet } from './sets';
 
 const valid = { exercise: 'Squat', weight: '140', reps: '5', rpe: '8', sets: '1' };
 
@@ -143,6 +143,21 @@ describe('groupByExercise', () => {
     expect(groups.length).toBe(2);
     expect(groups[0].exercise).toBe('Bench');
     expect(groups[1].exercise).toBe('Squat');
+  })
+
+  describe('removeSet', () => {
+    const squat: LoggedSet = { id: "1", exercise: "Squat", weightKg: 100, reps: 5, rpe: 8 };
+    const bench: LoggedSet = { id: "2", exercise: "Bench", weightKg: 80, reps: 5, rpe: 8 }
+    
+    it('remove only the set with that id', () => {
+      const result = removeSet([squat, bench], "1");
+      expect(result).toEqual([bench]);
+    })
+
+    it('remove an id that does not exist', () => {
+      const result = removeSet([squat, bench], "99");
+      expect(result).toEqual([squat, bench]);
+    })
   })
 });
 

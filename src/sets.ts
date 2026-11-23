@@ -86,3 +86,9 @@ export function groupByExercise(sets: LoggedSet[]): ExerciseGroup[] {
   return groups
 }
 
+export function removeSet(sets: LoggedSet[], id: string): LoggedSet[] {
+  const remaining = sets.filter((set) => set.id !== id)
+
+  return remaining
+}
+
