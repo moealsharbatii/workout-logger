@@ -9,7 +9,13 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { formatSet, LoggedSet, validateSet, groupByExercise } from "./src/sets";
+import {
+  formatSet,
+  LoggedSet,
+  validateSet,
+  groupByExercise,
+  removeSet,
+} from "./src/sets";
 
 export default function App() {
   // What's currently typed in the form
@@ -49,7 +55,6 @@ export default function App() {
       return;
     }
     setError("");
-
     // One entry per set, so 3 x 12 becomes three entries.
     const now = Date.now();
     const newSets: LoggedSet[] = [];
@@ -61,6 +66,10 @@ export default function App() {
     // The form keeps its values on purpose: the next set is usually the same
     // exercise and weight, so only small edits are needed. Sets goes back to 1.
     setSetCount("1");
+  }
+
+  function deleteSet(id: string) {
+    setSets(removeSet(sets, id));
   }
 
   const sections = groupByExercise(sets).map((group) => ({
@@ -120,6 +129,9 @@ export default function App() {
         renderItem={({ item, index }) => (
           <View style={styles.setRow}>
             <Text>{formatSet(item, index + 1)}</Text>
+            <Pressable onPress={() => deleteSet(item.id)}>
+              <Text style={styles.delete}>Delete</Text>
+            </Pressable>
           </View>
         )}
         ListEmptyComponent={
@@ -181,10 +193,13 @@ const styles = StyleSheet.create({
   },
   buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
   setRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
   },
+  delete: { color: "#c62828" },
   setExercise: { fontWeight: "600" },
   empty: { color: "#888", marginTop: 8 },
 });
