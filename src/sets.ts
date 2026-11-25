@@ -4,6 +4,7 @@ export type LoggedSet = {
   weightKg: number;
   reps: number;
   rpe: number;
+  date: string;
 };
 
 // What the user typed into the form. Text inputs always give strings.
@@ -19,7 +20,7 @@ export type SetInput = {
 export const MAX_SETS_AT_ONCE = 10;
 
 export type ValidationResult =
-  | { ok: true; set: Omit<LoggedSet, 'id'>; count: number }
+  | { ok: true; set: Omit<LoggedSet, 'id' | 'date'>; count: number }
   | { ok: false; error: string };
 
 export function validateSet(input: SetInput): ValidationResult {
@@ -49,7 +50,7 @@ export function validateSet(input: SetInput): ValidationResult {
     return { ok: false, error: `Sets must be a whole number from 1 to ${MAX_SETS_AT_ONCE}.` };
   }
 
-  return { ok: true, set: { exercise, weightKg, reps, rpe }, count };
+  return { ok: true, set: { exercise, weightKg, reps, rpe, }, count };
 }
 
 // Which set this is for its exercise: the 1st, 2nd, 3rd squat set, and so on.

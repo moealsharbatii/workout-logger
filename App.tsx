@@ -15,6 +15,7 @@ import {
   validateSet,
   groupByExercise,
   removeSet,
+  dateKey,
 } from "./src/sets";
 
 export default function App() {
@@ -59,7 +60,11 @@ export default function App() {
     const now = Date.now();
     const newSets: LoggedSet[] = [];
     for (let i = 0; i < result.count; i++) {
-      newSets.push({ id: `${now}-${i}`, ...result.set });
+      newSets.push({
+        id: `${now}-${i}`,
+        date: dateKey(new Date()),
+        ...result.set,
+      });
     }
     setSets([...sets, ...newSets]);
 

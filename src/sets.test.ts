@@ -77,6 +77,7 @@ describe('setNumber', () => {
     weightKg: 100,
     reps: 5,
     rpe: 8,
+    date: "2026-11-25"
   });
 
   it('numbers sets separately for each exercise', () => {
@@ -97,7 +98,8 @@ describe('formatSet', () => {
       exercise: 'Squat',
       weightKg: 140,
       reps: 5,
-      rpe: 8
+      rpe: 8,
+      date: "2026-11-25"
     };
     expect(formatSet(set, 2)).toBe('Set 2: 140 kg × 5 @ RPE 8');
   });
@@ -110,6 +112,7 @@ describe('groupByExercise', () => {
     weightKg: 100,
     reps: 5,
     rpe: 8,
+    date: "2026-11-25"
   });
 
   it('returns no groups for no sets', () => {
@@ -146,8 +149,8 @@ describe('groupByExercise', () => {
   })
 
   describe('removeSet', () => {
-    const squat: LoggedSet = { id: "1", exercise: "Squat", weightKg: 100, reps: 5, rpe: 8 };
-    const bench: LoggedSet = { id: "2", exercise: "Bench", weightKg: 80, reps: 5, rpe: 8 }
+    const squat: LoggedSet = { id: "1", exercise: "Squat", weightKg: 100, reps: 5, rpe: 8, date: "2026-11-25" };
+    const bench: LoggedSet = { id: "2", exercise: "Bench", weightKg: 80, reps: 5, rpe: 8, date: "2026-11-25" };
     
     it('remove only the set with that id', () => {
       const result = removeSet([squat, bench], "1");
