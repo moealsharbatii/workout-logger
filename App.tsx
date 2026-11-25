@@ -77,7 +77,9 @@ export default function App() {
     setSets(removeSet(sets, id));
   }
 
-  const sections = groupByExercise(sets).map((group) => ({
+  const today = dateKey(new Date());
+  const todaysSets = sets.filter((set) => set.date === today);
+  const sections = groupByExercise(todaysSets).map((group) => ({
     title: group.exercise,
     data: group.sets,
   }));
