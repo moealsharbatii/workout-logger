@@ -29,7 +29,8 @@ describe('loadSets', () => {
                 exercise: "Squat",
                 weightKg: 100,
                 reps: 5,
-                rpe: 9
+                rpe: 9,
+                date: "2026-11-25"
             }]
         await saveSets(sets)
         expect(await loadSets()).toEqual(sets)
