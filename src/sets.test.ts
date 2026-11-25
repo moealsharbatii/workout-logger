@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import { formatSet, LoggedSet, MAX_SETS_AT_ONCE, setNumber, validateSet, groupByExercise, removeSet } from './sets';
+import { formatSet, LoggedSet, MAX_SETS_AT_ONCE, setNumber, validateSet, groupByExercise, removeSet, dateKey } from './sets';
 
 const valid = { exercise: 'Squat', weight: '140', reps: '5', rpe: '8', sets: '1' };
 
@@ -157,6 +157,18 @@ describe('groupByExercise', () => {
     it('remove an id that does not exist', () => {
       const result = removeSet([squat, bench], "99");
       expect(result).toEqual([squat, bench]);
+    })
+  })
+
+  describe('dateKey', () => {
+    it('get date with two two-digit month and day', () => {
+      const result = dateKey(new Date(2026, 10, 23))
+      expect(result).toEqual("2026-11-23")
+    })
+
+    it('get date with two one-digit month and day', () => {
+      const result = dateKey(new Date(2026, 0, 5))
+      expect(result).toEqual("2026-01-05")
     })
   })
 });
