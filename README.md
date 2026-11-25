@@ -11,6 +11,7 @@ A workout logging app for lifters, built with React Native, Expo and TypeScript.
 - The form keeps its values after logging, so the next set only needs small edits
 - Sets are grouped by exercise, so supersets stay readable, while the order they were logged is kept
 - Delete a logged set from its row
+- Each set is saved with the date it was logged, and the list shows only today's sets
 - Sets are saved on the phone, so they're still there after closing the app
 - If the saved data is ever corrupted, the app opens with an empty list instead of crashing
 
@@ -37,12 +38,11 @@ npx expo start --tunnel ngrok
 npm test
 ```
 
-Jest tests cover the validation rules at their boundaries, invalid input, set numbering and grouping, deleting a set, and saving and loading, including corrupted data. GitHub Actions runs the tests and a TypeScript type check on every push.
+Jest tests cover the validation rules at their boundaries, invalid input, set numbering and grouping, date formatting, deleting a set, and saving and loading, including corrupted data. GitHub Actions runs the tests and a TypeScript type check on every push.
 
 ## Next up
 
-- Add a date to each set, so "Today's workout" shows only today
-- Workout history by date
+- Workout history by date, including sets logged before dates were added
 - Estimated one-rep max from weight, reps and RPE
 - Rest timer
 - Option to mark a superset
